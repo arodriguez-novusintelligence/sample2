@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0",
   "projectId": "sample2-manual-aws",
-  "runId": "sample2-calculator-release-1-auto-1784302458",
-  "generatedAt": "2026-07-17T15:37:20.592177+00:00",
-  "durationMs": 137891,
+  "runId": "sample2-calculator-release-1-auto-1784305514",
+  "generatedAt": "2026-07-17T16:26:02.538356+00:00",
+  "durationMs": 44906,
   "humanWaitMs": 0,
   "estimatedTokens": 0,
   "estimatedCostUsd": 0.0,
@@ -52,20 +52,12 @@
       "mode": "automatic"
     }
   ],
-  "agent": {
-    "status": "PASS",
-    "agentId": "bc-4116221f-d592-4a46-8782-9316d2ccd185",
-    "runId": "run-4a6008ad-3e1b-4737-945a-f082c521ed78",
-    "durationMs": 53922,
-    "delivery": "direct-main",
-    "commit": "cd43cbf2ec80ff7d3f4bcc710c8b7747cc57adb6",
-    "summary": "Cloud Agent generó las Lambdas, template SAM y 11 tests; entrega directa a main."
-  },
+  "agent": {},
   "steps": [
     {
       "id": "intake",
       "status": "PASS",
-      "durationMs": 0,
+      "durationMs": 2,
       "estimatedCostUsd": 0,
       "detail": "3 requerimientos; approval_mode=automatic"
     },
@@ -78,31 +70,29 @@
     },
     {
       "id": "cloud-agent",
-      "status": "PASS",
+      "status": "SKIPPED",
       "durationMs": 0,
       "estimatedCostUsd": 0,
-      "detail": "reanudado: agentId=bc-4116221f-d592-4a46-8782-9316d2ccd185 runId=run-4a6008ad-3e1b-4737-945a-f082c521ed78",
-      "agentId": "bc-4116221f-d592-4a46-8782-9316d2ccd185",
-      "runId": "run-4a6008ad-3e1b-4737-945a-f082c521ed78"
+      "detail": "skip-agent solicitado"
     },
     {
       "id": "unit-tests",
       "status": "PASS",
-      "durationMs": 1016,
+      "durationMs": 450,
       "estimatedCostUsd": 0,
-      "detail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.004s\n\nOK\n"
+      "detail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.003s\n\nOK\n"
     },
     {
       "id": "verify-code",
       "status": "PASS",
-      "durationMs": 2141,
+      "durationMs": 1133,
       "estimatedCostUsd": 0,
       "detail": "archivos presentes + unit tests OK"
     },
     {
       "id": "deploy-dev",
       "status": "PASS",
-      "durationMs": 126327,
+      "durationMs": 34688,
       "estimatedCostUsd": 0,
       "detail": "stack sample2-calculator-dev en sa-east-1",
       "CalculateUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
@@ -113,7 +103,7 @@
     {
       "id": "smoke-rest",
       "status": "PASS",
-      "durationMs": 8407,
+      "durationMs": 8633,
       "estimatedCostUsd": 0,
       "detail": "4 checks"
     }
@@ -178,11 +168,32 @@
             "left": 2,
             "result": 5,
             "operation": "add",
+            "id": "f6509000-07f1-4000-9866-9b4f4eea087a",
+            "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
             "id": "f9e3a2f3-f26c-4dc6-9a45-b4f1aac3d389",
             "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
+            "id": "863ca6a2-a386-4cd5-813a-0c48ef948ba8",
+            "right": 3
+          },
+          {
+            "left": 6,
+            "result": 42,
+            "operation": "multiply",
+            "id": "d86bf325-4fcf-46d4-807b-ed0af9d972c3",
+            "right": 7
           }
         ],
-        "count": 1
+        "count": 4
       }
     }
   ],
@@ -193,8 +204,8 @@
   },
   "artifacts": [
     "https://github.com/arodriguez-novusintelligence/sample2",
-    "C:\\NovusIntelligence\\FrameworkMultiagenticoIA\\Workspace\\NovusAIDevelopmentFramework\\.nadf\\projects\\sample2-manual-aws\\output\\ENDPOINTS.md",
-    "C:\\NovusIntelligence\\FrameworkMultiagenticoIA\\Workspace\\NovusAIDevelopmentFramework\\.nadf\\projects\\sample2-manual-aws\\output\\endpoints.json"
+    "/home/runner/work/sample2/sample2/nadf-framework/.nadf/projects/sample2-manual-aws/output/ENDPOINTS.md",
+    "/home/runner/work/sample2/sample2/nadf-framework/.nadf/projects/sample2-manual-aws/output/endpoints.json"
   ],
   "nextAction": "review-evidence"
 }
