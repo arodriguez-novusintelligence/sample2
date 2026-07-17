@@ -2,7 +2,7 @@
 # Propósito: Iniciativa sample2 multi-requerimiento (modo automático, sin aprobaciones humanas).
 # Configuración: mode=automatic; production_deploy=forbidden; environment=dev.
 initiative:
-  id: sample2-calculator-release-1
+  id: sample2-calculator-release-1-ci
   title: Calculadora serverless auditable (release 1)
   source: manual
   environment: dev
