@@ -1,0 +1,61 @@
+{
+  "urls": {
+    "CalculateUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+    "ApiUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev",
+    "HealthUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health",
+    "HistoryUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history"
+  },
+  "smoke": [
+    {
+      "api": "GET /health",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "status": "ok",
+        "service": "sample2-calculator"
+      }
+    },
+    {
+      "api": "POST /calculate add",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "result": 5
+      }
+    },
+    {
+      "api": "POST /calculate div0",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "statusCode": 400,
+      "pass": true,
+      "body": {
+        "error": "Division by zero"
+      }
+    },
+    {
+      "api": "GET /history",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "items": [
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
+            "id": "f9e3a2f3-f26c-4dc6-9a45-b4f1aac3d389",
+            "right": 3
+          }
+        ],
+        "count": 1
+      }
+    }
+  ],
+  "examples": {
+    "calculate": "curl -s -X POST \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate\" -H \"content-type: application/json\" -d '{\"operation\":\"add\",\"left\":2,\"right\":3}'",
+    "history": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history\"",
+    "health": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health\""
+  }
+}

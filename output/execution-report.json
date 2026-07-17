@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0",
+  "projectId": "sample2-manual-aws",
+  "runId": "sample2-calculator-release-1-auto-1784302458",
+  "generatedAt": "2026-07-17T15:37:20.592177+00:00",
+  "durationMs": 137891,
+  "humanWaitMs": 0,
+  "estimatedTokens": 0,
+  "estimatedCostUsd": 0.0,
+  "stepCount": 7,
+  "failedSteps": [],
+  "skippedAgents": [
+    "frontend",
+    "visual-parity",
+    "planner",
+    "architect",
+    "security",
+    "reviewer"
+  ],
+  "status": "PASS",
+  "source": {
+    "adapter": "manual",
+    "reference": "nadf/initiative.yml",
+    "initiative": "sample2-calculator-release-1",
+    "targetRepo": "https://github.com/arodriguez-novusintelligence/sample2.git",
+    "approvalMode": "automatic"
+  },
+  "environment": "dev",
+  "approvals": [
+    {
+      "gate": "requirement:REQ-001-calculadora",
+      "status": "AUTO_GRANTED",
+      "approver": "nadf-automatic-mode",
+      "mode": "automatic"
+    },
+    {
+      "gate": "requirement:REQ-002-historial",
+      "status": "AUTO_GRANTED",
+      "approver": "nadf-automatic-mode",
+      "mode": "automatic"
+    },
+    {
+      "gate": "requirement:REQ-003-health",
+      "status": "AUTO_GRANTED",
+      "approver": "nadf-automatic-mode",
+      "mode": "automatic"
+    },
+    {
+      "gate": "deploy-dev",
+      "status": "AUTO_GRANTED",
+      "approver": "nadf-automatic-mode",
+      "mode": "automatic"
+    }
+  ],
+  "agent": {
+    "status": "PASS",
+    "agentId": "bc-4116221f-d592-4a46-8782-9316d2ccd185",
+    "runId": "run-4a6008ad-3e1b-4737-945a-f082c521ed78",
+    "durationMs": 53922,
+    "delivery": "direct-main",
+    "commit": "cd43cbf2ec80ff7d3f4bcc710c8b7747cc57adb6",
+    "summary": "Cloud Agent generó las Lambdas, template SAM y 11 tests; entrega directa a main."
+  },
+  "steps": [
+    {
+      "id": "intake",
+      "status": "PASS",
+      "durationMs": 0,
+      "estimatedCostUsd": 0,
+      "detail": "3 requerimientos; approval_mode=automatic"
+    },
+    {
+      "id": "approvals",
+      "status": "PASS",
+      "durationMs": 0,
+      "estimatedCostUsd": 0,
+      "detail": "modo automatico: gates auto-granted (0 ms wait)"
+    },
+    {
+      "id": "cloud-agent",
+      "status": "PASS",
+      "durationMs": 0,
+      "estimatedCostUsd": 0,
+      "detail": "reanudado: agentId=bc-4116221f-d592-4a46-8782-9316d2ccd185 runId=run-4a6008ad-3e1b-4737-945a-f082c521ed78",
+      "agentId": "bc-4116221f-d592-4a46-8782-9316d2ccd185",
+      "runId": "run-4a6008ad-3e1b-4737-945a-f082c521ed78"
+    },
+    {
+      "id": "unit-tests",
+      "status": "PASS",
+      "durationMs": 1016,
+      "estimatedCostUsd": 0,
+      "detail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.004s\n\nOK\n"
+    },
+    {
+      "id": "verify-code",
+      "status": "PASS",
+      "durationMs": 2141,
+      "estimatedCostUsd": 0,
+      "detail": "archivos presentes + unit tests OK"
+    },
+    {
+      "id": "deploy-dev",
+      "status": "PASS",
+      "durationMs": 126327,
+      "estimatedCostUsd": 0,
+      "detail": "stack sample2-calculator-dev en sa-east-1",
+      "CalculateUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "ApiUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev",
+      "HealthUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health",
+      "HistoryUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history"
+    },
+    {
+      "id": "smoke-rest",
+      "status": "PASS",
+      "durationMs": 8407,
+      "estimatedCostUsd": 0,
+      "detail": "4 checks"
+    }
+  ],
+  "endpoints": [
+    {
+      "requirement": "REQ-001-calculadora",
+      "api": "POST /calculate",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "example": "curl -s -X POST \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate\" -H \"content-type: application/json\" -d '{\"operation\":\"add\",\"left\":2,\"right\":3}'"
+    },
+    {
+      "requirement": "REQ-002-historial",
+      "api": "GET /history",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history",
+      "example": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history\""
+    },
+    {
+      "requirement": "REQ-003-health",
+      "api": "GET /health",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health",
+      "example": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health\""
+    }
+  ],
+  "smokeTests": [
+    {
+      "api": "GET /health",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "status": "ok",
+        "service": "sample2-calculator"
+      }
+    },
+    {
+      "api": "POST /calculate add",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "result": 5
+      }
+    },
+    {
+      "api": "POST /calculate div0",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
+      "statusCode": 400,
+      "pass": true,
+      "body": {
+        "error": "Division by zero"
+      }
+    },
+    {
+      "api": "GET /history",
+      "url": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history",
+      "statusCode": 200,
+      "pass": true,
+      "body": {
+        "items": [
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
+            "id": "f9e3a2f3-f26c-4dc6-9a45-b4f1aac3d389",
+            "right": 3
+          }
+        ],
+        "count": 1
+      }
+    }
+  ],
+  "usageExamples": {
+    "calculate": "curl -s -X POST \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate\" -H \"content-type: application/json\" -d '{\"operation\":\"add\",\"left\":2,\"right\":3}'",
+    "history": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/history\"",
+    "health": "curl -s \"https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/health\""
+  },
+  "artifacts": [
+    "https://github.com/arodriguez-novusintelligence/sample2",
+    "C:\\NovusIntelligence\\FrameworkMultiagenticoIA\\Workspace\\NovusAIDevelopmentFramework\\.nadf\\projects\\sample2-manual-aws\\output\\ENDPOINTS.md",
+    "C:\\NovusIntelligence\\FrameworkMultiagenticoIA\\Workspace\\NovusAIDevelopmentFramework\\.nadf\\projects\\sample2-manual-aws\\output\\endpoints.json"
+  ],
+  "nextAction": "review-evidence"
+}
