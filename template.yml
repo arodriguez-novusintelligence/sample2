@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: sample2-calculator - Calculadora serverless auditable (dev only)
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 10
+    MemorySize: 128
+    Architectures:
+      - x86_64
+
+Resources:
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref Stage
+
+  CalculationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub sample2-calculations-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  CalculatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sample2-calculator-${Stage}
+      CodeUri: src/
+      Handler: calculator.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CalculationsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CalculationsTable
+      Events:
+        Calculate:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /calculate
+            Method: POST
+        Health:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /health
+            Method: GET
+
+  HistoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub sample2-history-${Stage}
+      CodeUri: src/
+      Handler: history.handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref CalculationsTable
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref CalculationsTable
+      Events:
+        History:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /history
+            Method: GET
+
+Outputs:
+  ApiUrl:
+    Description: Base URL of the HTTP API
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}
+  CalculateUrl:
+    Description: POST /calculate endpoint
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/calculate
+  HistoryUrl:
+    Description: GET /history endpoint
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/history
+  HealthUrl:
+    Description: GET /health endpoint
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/health
