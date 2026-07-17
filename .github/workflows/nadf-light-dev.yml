@@ -1,0 +1,144 @@
+# NADF-GUIDE
+# Propósito: Hace visible en GitHub el ciclo initiative → Cloud Agent → DEV → endpoints.
+# Configuración: secrets CURSOR_API_KEY/GH_PAT; vars AWS_ROLE_ARN/NADF_SAM_BUCKET.
+name: NADF sample2 light → DEV
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "nadf/initiative.yml"
+  workflow_dispatch:
+    inputs:
+      skip_agent:
+        description: "Reutilizar el código actual sin invocar Cloud Agent"
+        type: boolean
+        default: false
+      skip_deploy:
+        description: "Validar sin desplegar a DEV"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: nadf-sample2-light-dev
+  cancel-in-progress: false
+
+jobs:
+  lifecycle:
+    name: Intake → Cloud Agent → Tests → DEV → Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout sample2
+        uses: actions/checkout@v4
+        with:
+          path: sample2
+          token: ${{ secrets.GH_PAT || github.token }}
+          fetch-depth: 0
+
+      - name: Checkout NADF
+        uses: actions/checkout@v4
+        with:
+          repository: arodriguez-novusintelligence/NovusAIDevelopmentFramework
+          ref: feature/novus-intelligence
+          path: nadf-framework
+          token: ${{ secrets.GH_PAT || github.token }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: nadf-framework/prototypes/m6-cloud-agent/package-lock.json
+
+      - name: Install NADF runtime
+        run: |
+          python -m pip install --quiet PyYAML
+          npm ci --prefix nadf-framework/prototypes/m6-cloud-agent
+
+      - uses: aws-actions/setup-sam@v2
+
+      - name: Assume AWS DEV role (OIDC)
+        if: ${{ inputs.skip_deploy != true }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: sa-east-1
+
+      - name: Execute NADF light lifecycle
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          NADF_WORKTREE: ${{ github.workspace }}/sample2
+          NADF_SAM_BUCKET: ${{ vars.NADF_SAM_BUCKET }}
+          NADF_MODEL: ${{ vars.NADF_MODEL || 'composer-2.5' }}
+        working-directory: nadf-framework
+        shell: bash
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.skip_agent }}" = "true" ]; then FLAGS="$FLAGS --skip-agent"; fi
+          if [ "${{ inputs.skip_deploy }}" = "true" ]; then FLAGS="$FLAGS --skip-deploy"; fi
+          python tools/nadf-fast-cycle/run_auto.py $FLAGS
+
+      - name: Publish NADF output in sample2
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p sample2/output
+          for file in ENDPOINTS.md endpoints.json metrics-summary.json execution-report.json; do
+            if [ -f "nadf-framework/.nadf/projects/sample2-manual-aws/output/$file" ]; then
+              cp "nadf-framework/.nadf/projects/sample2-manual-aws/output/$file" "sample2/output/$file"
+            fi
+          done
+          if [ -f "nadf-framework/.nadf/projects/sample2-manual-aws/output/latest/execution-report.json" ]; then
+            cp "nadf-framework/.nadf/projects/sample2-manual-aws/output/latest/execution-report.json" \
+              "sample2/output/execution-report.json"
+          fi
+
+      - name: Actions job summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "# NADF sample2 — ejecución ${{ github.run_number }}"
+            echo
+            echo "- Initiative: \`sample2-calculator-release-1\`"
+            echo "- Trigger commit: \`${{ github.sha }}\`"
+            echo "- Approval mode: automático"
+            echo "- Environment: DEV"
+            echo
+            if [ -f sample2/output/ENDPOINTS.md ]; then
+              cat sample2/output/ENDPOINTS.md
+            else
+              echo "El ciclo no alcanzó la generación de endpoints."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload auditable output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nadf-sample2-output-${{ github.run_id }}
+          path: sample2/output/
+          if-no-files-found: warn
+
+      - name: Version output
+        if: success()
+        working-directory: sample2
+        shell: bash
+        run: |
+          git config user.name "nadf-bot"
+          git config user.email "nadf-bot@users.noreply.github.com"
+          git add output/
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m "chore(nadf): output run ${{ github.run_id }} [skip ci]"
+          git push origin main
