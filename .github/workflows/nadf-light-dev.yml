@@ -61,7 +61,7 @@ jobs:
 
       - name: Install NADF runtime
         run: |
-          python -m pip install --quiet PyYAML
+          python -m pip install --quiet PyYAML boto3
           npm ci --prefix nadf-framework/prototypes/m6-cloud-agent
 
       - uses: aws-actions/setup-sam@v2
