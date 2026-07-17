@@ -45,6 +45,13 @@
             "left": 2,
             "result": 5,
             "operation": "add",
+            "id": "5dc0f53c-f06d-40be-b7b1-ad1c2ace65d5",
+            "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
             "id": "f6509000-07f1-4000-9866-9b4f4eea087a",
             "right": 3
           },
@@ -53,6 +60,13 @@
             "result": 5,
             "operation": "add",
             "id": "f9e3a2f3-f26c-4dc6-9a45-b4f1aac3d389",
+            "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
+            "id": "1df8c910-461f-4f9b-ac56-4d05a868e592",
             "right": 3
           },
           {
@@ -70,7 +84,7 @@
             "right": 7
           }
         ],
-        "count": 4
+        "count": 6
       }
     }
   ],

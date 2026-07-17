@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0",
   "projectId": "sample2-manual-aws",
-  "runId": "sample2-calculator-release-1-auto-1784305514",
-  "generatedAt": "2026-07-17T16:26:02.538356+00:00",
-  "durationMs": 44906,
+  "runId": "sample2-calculator-release-1-ci-ci-auto-1784305798",
+  "generatedAt": "2026-07-17T16:31:21.937954+00:00",
+  "durationMs": 79678,
   "humanWaitMs": 0,
   "estimatedTokens": 0,
   "estimatedCostUsd": 0.0,

@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0",
   "projectId": "sample2-manual-aws",
-  "runId": "sample2-calculator-release-1-auto-1784305514",
-  "generatedAt": "2026-07-17T16:26:02.538356+00:00",
-  "durationMs": 44906,
+  "runId": "sample2-calculator-release-1-ci-ci-auto-1784305798",
+  "generatedAt": "2026-07-17T16:31:21.937954+00:00",
+  "durationMs": 79678,
   "humanWaitMs": 0,
   "estimatedTokens": 0,
   "estimatedCostUsd": 0.0,
@@ -21,7 +21,7 @@
   "source": {
     "adapter": "manual",
     "reference": "nadf/initiative.yml",
-    "initiative": "sample2-calculator-release-1",
+    "initiative": "sample2-calculator-release-1-ci-ci",
     "targetRepo": "https://github.com/arodriguez-novusintelligence/sample2.git",
     "approvalMode": "automatic"
   },
@@ -52,7 +52,14 @@
       "mode": "automatic"
     }
   ],
-  "agent": {},
+  "agent": {
+    "status": "PASS",
+    "agentId": "bc-dd7464e9-9b05-45dd-8011-946dcd2f3743",
+    "runId": "run-92d799cd-c419-41c0-ae9f-a72c5a3b7690",
+    "durationMs": 64508,
+    "summary": "La calculadora serverless **sample2 release 1** ya está implementada y commiteada en `main` (commit `cd43cbf`). Verifiqué los 11 tests unitarios: todos pasan.\n\n## Archivos entregados\n\n| Archivo | Descripción |\n|---------|-------------|\n| `src/calculator.py` | Handler Lambda: `POST /calculate`, `GET /health`, persistencia opcional en DynamoDB |\n| `src/history.py` | Handler Lambda: `GET /history` con scan (Limit 50) o lista vacía sin `TABLE_NAME` |\n| `template.yml` | AWS SAM: HTTP API, tabla `sample2-calculations-dev`, 2 funciones, outputs de URLs |\n| `tests/test_calculator.py` | 9 tests: operaciones, errores 400, health, persistencia mockeada |\n| `tests/test_history.py` | 2 tests: lista vacía local y scan con items |\n| `README.md` | Documentación de APIs, `sam build`, tests, deploy y uso lo | entregado directo a main",
+    "delivery": "direct-main"
+  },
   "steps": [
     {
       "id": "intake",
@@ -70,29 +77,31 @@
     },
     {
       "id": "cloud-agent",
-      "status": "SKIPPED",
-      "durationMs": 0,
+      "status": "PASS",
+      "durationMs": 64508,
       "estimatedCostUsd": 0,
-      "detail": "skip-agent solicitado"
+      "detail": "La calculadora serverless **sample2 release 1** ya está implementada y commiteada en `main` (commit `cd43cbf`). Verifiqué los 11 tests unitarios: todos pasan.\n\n## Archivos entregados\n\n| Archivo | Desc",
+      "agentId": "bc-dd7464e9-9b05-45dd-8011-946dcd2f3743",
+      "runId": "run-92d799cd-c419-41c0-ae9f-a72c5a3b7690"
     },
     {
       "id": "unit-tests",
       "status": "PASS",
-      "durationMs": 450,
+      "durationMs": 604,
       "estimatedCostUsd": 0,
-      "detail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.003s\n\nOK\n"
+      "detail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.004s\n\nOK\n"
     },
     {
       "id": "verify-code",
       "status": "PASS",
-      "durationMs": 1133,
+      "durationMs": 903,
       "estimatedCostUsd": 0,
       "detail": "archivos presentes + unit tests OK"
     },
     {
       "id": "deploy-dev",
       "status": "PASS",
-      "durationMs": 34688,
+      "durationMs": 11303,
       "estimatedCostUsd": 0,
       "detail": "stack sample2-calculator-dev en sa-east-1",
       "CalculateUrl": "https://dsd3zcakg5.execute-api.sa-east-1.amazonaws.com/dev/calculate",
@@ -103,7 +112,7 @@
     {
       "id": "smoke-rest",
       "status": "PASS",
-      "durationMs": 8633,
+      "durationMs": 2358,
       "estimatedCostUsd": 0,
       "detail": "4 checks"
     }
@@ -168,6 +177,13 @@
             "left": 2,
             "result": 5,
             "operation": "add",
+            "id": "5dc0f53c-f06d-40be-b7b1-ad1c2ace65d5",
+            "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
             "id": "f6509000-07f1-4000-9866-9b4f4eea087a",
             "right": 3
           },
@@ -176,6 +192,13 @@
             "result": 5,
             "operation": "add",
             "id": "f9e3a2f3-f26c-4dc6-9a45-b4f1aac3d389",
+            "right": 3
+          },
+          {
+            "left": 2,
+            "result": 5,
+            "operation": "add",
+            "id": "1df8c910-461f-4f9b-ac56-4d05a868e592",
             "right": 3
           },
           {
@@ -193,7 +216,7 @@
             "right": 7
           }
         ],
-        "count": 4
+        "count": 6
       }
     }
   ],
