@@ -1,0 +1,14 @@
+id: REQ-001-calculadora
+title: API REST de cálculo
+description: Exponer POST /calculate para sumar, restar, multiplicar y dividir; registrar el resultado en DynamoDB.
+endpoint: POST /calculate
+lambda: sample2-calculator-dev
+acceptance_criteria:
+  - Operaciones válidas responden 200 con result
+  - División por cero responde 400
+  - El resultado se persiste en DynamoDB
+approval:
+  mode: automatic
+  status: auto-granted
+tests:
+  - tests/test_calculator.py

@@ -1,0 +1,12 @@
+id: REQ-003-health
+title: Endpoint de salud
+description: Exponer GET /health para monitoreo del servicio de cálculo.
+endpoint: GET /health
+lambda: sample2-calculator-dev
+acceptance_criteria:
+  - GET /health responde 200 con status ok
+approval:
+  mode: automatic
+  status: auto-granted
+tests:
+  - tests/test_calculator.py

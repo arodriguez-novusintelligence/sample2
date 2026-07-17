@@ -1,0 +1,20 @@
+# NADF-GUIDE
+# Propósito: Iniciativa sample2 multi-requerimiento (modo automático, sin aprobaciones humanas).
+# Configuración: mode=automatic; production_deploy=forbidden; environment=dev.
+initiative:
+  id: sample2-calculator-release-1
+  title: Calculadora serverless auditable (release 1)
+  source: manual
+  environment: dev
+  production_deploy: forbidden
+  approval_mode: automatic
+  execution: sequential
+  max_concurrency: 1
+  stack_name: sample2-calculator-dev
+  aws_region: sa-east-1
+  target_repo: https://github.com/arodriguez-novusintelligence/sample2.git
+
+requirements:
+  - file: requests/REQ-001-calculadora.yml
+  - file: requests/REQ-002-historial.yml
+  - file: requests/REQ-003-health.yml

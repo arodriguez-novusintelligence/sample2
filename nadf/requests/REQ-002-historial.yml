@@ -1,0 +1,13 @@
+id: REQ-002-historial
+title: API REST de historial
+description: Exponer GET /history que devuelva los cálculos registrados en DynamoDB.
+endpoint: GET /history
+lambda: sample2-history-dev
+acceptance_criteria:
+  - GET /history responde 200 con lista items
+  - Sin tabla configurada responde lista vacía (modo local)
+approval:
+  mode: automatic
+  status: auto-granted
+tests:
+  - tests/test_history.py
